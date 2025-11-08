@@ -48,11 +48,13 @@ Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i p
 
 Model łączy równe wkłady ryzyka z subiektywnymi poglądami analityków:
 
+
 $$
 \mu_{\mathrm{BL}}
 = \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
   \left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
 $$
+
 
 gdzie:
 
@@ -64,9 +66,11 @@ gdzie:
 
 Wynikowe wagi to:
 
+
 $$
 w_{\mathrm{BL}} \;=\; \frac{1}{\delta}\,\Sigma^{-1}\,\mu_{\mathrm{BL}}
 $$
+
 
 W projekcie użyto wersji praktycznej z ograniczeniami `bl_box_lb, bl_box_ub`, dzięki czemu wynikowe wagi można interpretować wprost jako realistyczne udziały w portfelu.
 
