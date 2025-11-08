@@ -35,11 +35,11 @@ Miary ryzyka liczone są bez założeń o rozkładzie stóp zwrotu:
 Celem jest równy udział każdej pozycji w całkowitym ryzyku:
 
 $$
-RC_i \;=\; w_i\,(\Sigma w)_i
+RC_i \,=\, w_i\,(\Sigma w)_i
 $$
 
 $$
-RC_i \;=\; \frac{1}{n}, \quad i=1,\dots,n
+RC_i \,=\, \frac{1}{n}, \quad i=1,\dots,n
 $$
 
 Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i przedziałami $w_{min}, w_{max}$.
@@ -68,7 +68,7 @@ Wynikowe wagi to:
 
 
 $$
-w_{\mathrm{BL}} \;=\; \frac{1}{\delta}\,\Sigma^{-1}\,\mu_{\mathrm{BL}}
+w_{\mathrm{BL}} \,=\, \frac{1}{\delta}\,\Sigma^{-1}\,\mu_{\mathrm{BL}}
 $$
 
 
