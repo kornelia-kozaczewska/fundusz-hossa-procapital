@@ -33,17 +33,21 @@ Miary ryzyka liczone są bez założeń o rozkładzie stóp zwrotu:
 ### Risk Parity
 
 Celem jest równy udział każdej pozycji w całkowitym ryzyku:
-$$RC_i = w_i \cdot (\Sigma w)_i, \quad RC_i = \frac{1}{n}$$
+$$
+RC_i = w_i \cdot (\Sigma w)_i, \quad RC_i = \frac{1}{n}
+$$
 Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i przedziałami $w_{min}, w_{max}$.
 
 ### Black–Litterman (BL)
 
 Model łączy równowagę rynkową z subiektywnymi poglądami analityków:
-$$\mu_{BL} = \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
-\left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]$$
+$$
+\mu_{BL} = \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
+\left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
+$$
 gdzie:
 
-* $π = δΣw_mkt$ – zwroty równowagi (priory),
+* $π = δΣw_{mkt}$ – zwroty równowagi (priory),
 * $P, Q$ – macierz i wektor poglądów (np. oczekiwany „upside”),
 * $Ω$ – wariancje błędów poglądów (zależne od „Zaufania”),
 * $τ$ – niepewność priory,
