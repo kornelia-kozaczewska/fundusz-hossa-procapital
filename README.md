@@ -40,21 +40,23 @@ Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i p
 
 ### Black–Litterman (BL)
 
-Model łączy równowagę rynkową z subiektywnymi poglądami analityków:
+Model łączy równe wkłady ryzyka z subiektywnymi poglądami analityków:
 $$
 \mu_{BL} = \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
 \left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
 $$
 gdzie:
 
-* $π = δΣw_{mkt}$ – zwroty równowagi (priory),
-* $P, Q$ – macierz i wektor poglądów (np. oczekiwany „upside”),
-* $Ω$ – wariancje błędów poglądów (zależne od „Zaufania”),
+* $π = δΣw_{PR}$ – zwroty równowagi (priory) z modelu Risk Parity,
+* $P, Q$ – macierz i wektor poglądów (oczekiwany „upside”),
+* $Ω$ – wariancje błędów poglądów,
 * $τ$ – niepewność priory,
 * $δ$ – współczynnik awersji do ryzyka.
 
 Wynikowe wagi to:
-$$w_{BL} = \frac{1}{\delta}\Sigma^{-1}\mu_{BL}$$
+$$
+w_{BL} = \frac{1}{\delta}\Sigma^{-1}\mu_{BL}
+$$
 
 W projekcie użyto wersji praktycznej z ograniczeniami `bl_box_lb, bl_box_ub`, dzięki czemu wynikowe wagi można interpretować wprost jako realistyczne udziały w portfelu.
 
