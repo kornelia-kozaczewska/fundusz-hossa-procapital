@@ -44,11 +44,13 @@ Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i p
 ### Black–Litterman (BL)
 
 Model łączy równe wkłady ryzyka z subiektywnymi poglądami analityków:
+
 $$
 \mu_{\mathrm{BL}}
 = [(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P]^{-1}
   [(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q]
 $$
+
 gdzie:
 
 * $π = δΣw_{PR}$ – zwroty równowagi (priory) z modelu Risk Parity,
