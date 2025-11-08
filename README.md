@@ -33,12 +33,15 @@ Miary ryzyka liczone są bez założeń o rozkładzie stóp zwrotu:
 ### Risk Parity
 
 Celem jest równy udział każdej pozycji w całkowitym ryzyku:
+
 $$
-RC_i = w_i(\Sigma w)_i
+RC_i \;=\; w_i\,(\Sigma w)_i
 $$
+
 $$
-RC_i = \frac{1}{n} \quad i=1,\dots,n
+RC_i \;=\; \frac{1}{n}, \quad i=1,\dots,n
 $$
+
 Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i przedziałami $w_{min}, w_{max}$.
 
 ### Black–Litterman (BL)
@@ -47,8 +50,8 @@ Model łączy równe wkłady ryzyka z subiektywnymi poglądami analityków:
 
 $$
 \mu_{\mathrm{BL}}
-= [(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P]^{-1}
-  [(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q]
+= \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
+  \left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
 $$
 
 gdzie:
@@ -60,8 +63,9 @@ gdzie:
 * $δ$ – współczynnik awersji do ryzyka.
 
 Wynikowe wagi to:
+
 $$
-w_{\mathrm{BL}} = \frac{1}{\delta}\Sigma^{-1}\mu_{\mathrm{BL}}
+w_{\mathrm{BL}} \;=\; \frac{1}{\delta}\,\Sigma^{-1}\,\mu_{\mathrm{BL}}
 $$
 
 W projekcie użyto wersji praktycznej z ograniczeniami `bl_box_lb, bl_box_ub`, dzięki czemu wynikowe wagi można interpretować wprost jako realistyczne udziały w portfelu.
