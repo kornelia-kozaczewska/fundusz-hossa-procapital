@@ -1,112 +1,116 @@
-# Fundusz Hossa Procapital
+# Fundusz Hossa Procapital - student fund
 
-System analityczny do zarządzania portfelem inwestycyjnym oparty na:
-- **empirycznych miarach ryzyka (VaR, ES, Max Drawdown)**,
-- **modelu Risk Parity**,
-- **modelu Black–Littermana (BL)** z ograniczeniami wag.
+An analytical system for **portfolio risk management**, based on:
 
-Projekt integruje dane transakcyjne i wyceny spółek z Excela, pobiera historyczne ceny z Yahoo Finance, oblicza miary ryzyka i generuje raport w formacie Excel.
+* **empirical risk measures (VaR, ES, Max Drawdown)**,
+* **the Risk Parity model**,
+* **the Black–Litterman (BL) model** with weight constraints.
 
+The project integrates trade and valuation data from Excel, fetches historical prices from Yahoo Finance, computes portfolio risk metrics, and generates a comprehensive Excel report.
 
+---
 
-## Zawartość raportu
+## Report contents
 
-| Arkusz          | Opis                                                               |
-| :-------------- | :----------------------------------------------------------------- |
-| **Summary**     | Wartość portfela, zmienność, VaR, ES, Max Drawdown, gotówka        |
-| **Weights**     | Porównanie wag: bieżące, Risk Parity, Black–Litterman, ograniczone |
-| **Holdings**    | Stan posiadania akcji                                              |
-| **Prices_Tail** | Ostatnie notowania (10 dni)                                        |
-| **Config**      | Użyta konfiguracja i parametry sesji                               |
+| Sheet           | Description                                                               |
+| :-------------- | :------------------------------------------------------------------------ |
+| **Summary**     | Portfolio value, volatility, VaR, ES, Max Drawdown, cash balance          |
+| **Weights**     | Comparison of weights: current, Risk Parity, Black–Litterman, constrained |
+| **Holdings**    | Current holdings of individual stocks                                     |
+| **Prices_Tail** | Last 10 trading days of price data                                        |
+| **Config**      | Configuration parameters used in the current session                      |
 
+---
 
-## Teoria
+## Theory
 
-### Empiryczne ryzyko
+### Empirical Risk
 
-Miary ryzyka liczone są bez założeń o rozkładzie stóp zwrotu:
+Risk measures are computed without assuming any specific return distribution:
 
-* **VaR (Value-at-Risk)** – strata nieprzekraczana z prawdopodobieństwem `confidence`.
-* **ES (Expected Shortfall)** – średnia strata w ogonie poniżej VaR.
-* **Max Drawdown** – największy spadek wartości portfela od szczytu.
+* **VaR (Value-at-Risk)** – maximum expected loss not exceeded with probability `confidence`.
+* **ES (Expected Shortfall)** – average loss in the tail beyond VaR.
+* **Max Drawdown** – largest peak-to-trough decline in the portfolio’s value.
+
+---
 
 ### Risk Parity
 
-Celem jest równy udział każdej pozycji w całkowitym ryzyku:
+The goal is to achieve **equal risk contribution** for each asset in the portfolio:
 
 $$
 RC_i = w_i(\Sigma w)_i
 $$
 
 $$
-RC_i = \frac{1}{n}, \quad i=1,\dots,n
+RC_i = \frac{1}{n}, \quad i = 1, \dots, n
 $$
 
-Rozwiązanie uzyskiwane przez optymalizację SLSQP z ograniczeniami sumy wag i przedziałami $w_{min}, w_{max}$.
+The solution is obtained using **SLSQP optimization** with weight-sum and bound constraints
+$w_{min}, w_{max}$.
+
+---
 
 ### Black–Litterman (BL)
 
-Model łączy równe wkłady ryzyka z subiektywnymi poglądami analityków:
-
+The model combines **equal risk contribution (Risk Parity)** with **subjective analyst views**:
 
 $$
 \mu_{\mathrm{BL}}
 = \left[(\tau\Sigma)^{-1} + P^\top \Omega^{-1} P\right]^{-1}
-  \left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
+\left[(\tau\Sigma)^{-1}\pi + P^\top \Omega^{-1} Q\right]
 $$
 
+where:
 
-gdzie:
+* $π = δΣw_{PR}$ – equilibrium (prior) returns from the Risk Parity model,
+* $P, Q$ – matrix and vector of analyst views (expected “upside”),
+* $Ω$ – view error covariance (confidence-weighted),
+* $τ$ – uncertainty of prior estimates,
+* $δ$ – risk aversion coefficient.
 
-* $π = δΣw_{PR}$ – zwroty równowagi (priory) z modelu Risk Parity,
-* $P, Q$ – macierz i wektor poglądów (oczekiwany „upside”),
-* $Ω$ – wariancje błędów poglądów,
-* $τ$ – niepewność priory,
-* $δ$ – współczynnik awersji do ryzyka.
-
-Wynikowe wagi to:
-
+Resulting optimal weights are:
 
 $$
 w_{\mathrm{BL}} = \frac{1}{\delta}\Sigma^{-1}\mu_{\mathrm{BL}}
 $$
 
+In this project, a **practical constrained version** with bounds `bl_box_lb, bl_box_ub` was implemented,
+so that the resulting weights can be directly interpreted as realistic portfolio allocations.
 
-W projekcie użyto wersji praktycznej z ograniczeniami `bl_box_lb, bl_box_ub`, dzięki czemu wynikowe wagi można interpretować wprost jako realistyczne udziały w portfelu.
+---
 
-
-## Struktura projektu
+## Project structure
 
 ```
 fundusz-hossa-procapital/
 │
 ├── analytics/
-│   ├── risk_metrics.py       # Empiryczne ryzyko portfela (VaR, ES, MDD)
-│   └── risk_utils.py         # Zwroty, NAV, przeliczenia
+│   ├── risk_metrics.py       # Empirical portfolio risk (VaR, ES, MDD)
+│   └── risk_utils.py         # Returns, NAV, conversions
 │
 ├── data/
-│   ├── portfolio_loader.py   # Wczytywanie transakcji i stanów
-│   ├── prices.py             # Pobieranie cen z Yahoo Finance
-│   └── valuation_loader.py   # Wczytywanie wycen spółek
+│   ├── portfolio_loader.py   # Load transactions and holdings
+│   ├── prices.py             # Download prices from Yahoo Finance
+│   └── valuation_loader.py   # Load company valuations
 │
 ├── optimization/
 │   ├── risk_parity.py        # Risk Parity (SLSQP)
-│   ├── black_litterman.py    # Model Black–Littermana (PyPortfolioOpt)
-│   ├── constraints.py        # Projekcja wag na ograniczony sympleks
-│   └── upside.py             # Filtrowanie spółek po „upside”
+│   ├── black_litterman.py    # Black–Litterman model (PyPortfolioOpt)
+│   ├── constraints.py        # Weight projection onto a boxed simplex
+│   └── upside.py             # Filter stocks by "upside"
 │
 ├── reporting/
-│   └── exporter.py           # Generowanie raportu Excel
+│   └── exporter.py           # Excel report generation
 │
-├── input/                    # Pliki wejściowe (transakcje, wyceny)
-├── output/                   # Wyniki raportów
-├── config.yaml               # Konfiguracja parametrów
-├── main.py                   # Główny skrypt sterujący
-└── requirements.txt          # Zależności Pythona
+├── input/                    # Input files (trades, valuations)
+├── output/                   # Output reports
+├── config.yaml               # Configuration parameters
+├── main.py                   # Main execution script
+└── requirements.txt          # Python dependencies
 ```
 
+---
 
-Struktura oraz kod został przygotowany przeze mnie na potrzeby Funduszu Hossa ProCapital.
-
-
+The project structure and code were developed by me for **Fundusz Hossa ProCapital**.
 
