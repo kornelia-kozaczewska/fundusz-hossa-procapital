@@ -1,4 +1,4 @@
-# Fundusz Hossa Procapital - student fund
+# A Python-based analytical tool for portfolio risk management in the Hossa Procapital student fund
 
 An analytical system for **portfolio risk management**, based on:
 
@@ -112,5 +112,5 @@ fundusz-hossa-procapital/
 
 ---
 
-The project structure and code were developed by me for **Fundusz Hossa ProCapital**.
+The project structure and code were developed by me for **Fundusz Hossa ProCapital** and is further developed [here](https://github.com/HossaProCapital/student-fund).
 
